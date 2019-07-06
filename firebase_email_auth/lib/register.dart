@@ -1,30 +1,18 @@
-import 'package:firebase_email_auth/register.dart';
+import 'package:firebase_email_auth/main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() => runApp(Home());
-var emailTC = TextEditingController();
-var passwordTC = TextEditingController();
-
-class Home extends StatelessWidget {
+class Register extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter with Firebase',
-      theme: ThemeData.light(),
-      home: HomePage(),
-    );
-  }
+  _RegisterState createState() => _RegisterState();
 }
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class _RegisterState extends State<Register> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  var emailTC = TextEditingController();
+
+  var passwordTC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +33,20 @@ class _HomePageState extends State<HomePage> {
               decoration: InputDecoration(labelText: "Password"),
             ),
             FlatButton(
-                child: Text("Login"),
+                child: Text("Register"),
                 textColor: Colors.white,
                 color: Colors.blue,
                 onPressed: () {
-                  login(emailTC.text, passwordTC.text);
+                  register(emailTC.text, passwordTC.text);
                 }),
             InkWell(
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => Register()));
+                        builder: (BuildContext context) => HomePage()));
               },
-              child: Text("Create an account",
+              child: Text("Log in into an account",
                   style: TextStyle(color: Colors.blueAccent)),
             )
           ],
@@ -67,9 +55,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  login(emailAddr, pass) {
+  register(emailAddr, pass) {
     _auth
-        .signInWithEmailAndPassword(email: emailAddr, password: pass)
+        .createUserWithEmailAndPassword(email: emailAddr, password: pass)
         .then((FirebaseUser user) => print(user))
         .catchError((e) => print(e));
   }
